@@ -7,7 +7,7 @@ function Navbar(){
       <div className="container">
         <a href="https://bootswatch.com/" className="navbar-brand">Minhas Finanças</a>
         <button className="navbar-toggler" 
-          type="button" d
+          type="button"
           ata-toggle="collapse" 
           data-target="#navbarResponsive" 
           aria-controls="navbarResponsive" 
@@ -17,7 +17,7 @@ function Navbar(){
         </button>
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav">
-            <NavbarItem label="Home" href="#/" />
+            <NavbarItem label="Home" href="#/home" />
             <NavbarItem label="Usuários" href="#/cadastro-usuarios" />
             <NavbarItem label="Lancamentos" href="#/" />
             <NavbarItem label="Login" href="#/login" />
