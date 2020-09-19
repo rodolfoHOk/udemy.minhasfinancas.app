@@ -2,10 +2,13 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
+import UsuarioService from '../app/service/usuarioService';
+import { mensagemErro, mensagemSucesso } from '../components/toastr';
 
 class CadastroUsuario extends React.Component {
   constructor() {
     super();
+    this.service = new UsuarioService();
     this.state = {
       nome: '',
       email: '',
@@ -22,7 +25,61 @@ class CadastroUsuario extends React.Component {
   }
 
   cadastrar = () => {
-    console.log(this.state);
+    const msgs = this.validar();
+
+    if (msgs && msgs.length > 0) {
+      // eslint-disable-next-line no-unused-vars
+      msgs.forEach((msg, index) => {
+        mensagemErro(msg);
+      });
+    } else {
+      const { nome } = this.state;
+      const { email } = this.state;
+      const { senha } = this.state;
+
+      const usuario = {
+        nome,
+        email,
+        senha,
+      };
+
+      this.service.salvar(usuario)
+        .then(() => {
+          mensagemSucesso('Usuario cadastrado. Faça o login para acessar o sistema.');
+          // eslint-disable-next-line react/prop-types
+          const { history } = this.props;
+          // eslint-disable-next-line react/prop-types
+          history.push('/login');
+        }).catch((erro) => {
+          mensagemErro(erro.response.data);
+        });
+      // console.log(this.state);
+    }
+  }
+
+  validar() {
+    const mensagens = [];
+    const { nome } = this.state;
+    if (!nome) {
+      mensagens.push('Campo nome é obrigatório.');
+    }
+
+    const { email } = this.state;
+    if (!email) {
+      mensagens.push('Campo email é obrigatório.');
+    } else if (!email.match(/^[a-z0-9]+@[a-z0-9]+\.[a-z]/)) {
+      mensagens.push('Email informado inválido.');
+    }
+
+    const { senha } = this.state;
+    const { senhaRepetida } = this.state;
+    if (!senha || !senhaRepetida) {
+      mensagens.push('Digite a senha duas vezes.');
+    } else if (senha !== senhaRepetida) {
+      mensagens.push('Senhas não coincidem');
+    }
+
+    return mensagens;
   }
 
   render() {

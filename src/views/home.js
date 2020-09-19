@@ -1,6 +1,7 @@
 import React from 'react';
 import LocalStorageService from '../app/service/localStorageService';
 import UsuarioService from '../app/service/usuarioService';
+import { mensagemErro } from '../components/toastr';
 
 class Home extends React.Component {
   constructor() {
@@ -18,7 +19,8 @@ class Home extends React.Component {
       .then((response) => {
         this.setState({ saldo: response.data });
       }).catch((error) => {
-        console.log(error.response);
+        mensagemErro(error.response.data);
+        // console.log(error.response);
       });
   }
 
