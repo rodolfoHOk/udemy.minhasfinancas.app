@@ -99,7 +99,6 @@ class CadastroUsuario extends React.Component {
                     className="form-control"
                     id="inputNome"
                     name="nome"
-                    aria-describedby="emailHelp"
                     placeholder="Digite o Nome"
                     value={nome}
                     onChange={(e) => this.setState({ nome: e.target.value })}
@@ -111,7 +110,6 @@ class CadastroUsuario extends React.Component {
                     className="form-control"
                     id="inputEmail"
                     name="email"
-                    aria-describedby="emailHelp"
                     placeholder="Digite o Email"
                     value={email}
                     onChange={(e) => this.setState({ email: e.target.value })}
