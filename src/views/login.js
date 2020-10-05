@@ -84,6 +84,7 @@ class Login extends React.Component {
                       >
                         Entrar
                       </button>
+                      <span> </span>
                       <button
                         type="button"
                         onClick={this.prepareCadastrar}

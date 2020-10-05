@@ -14,7 +14,7 @@ import LocalStorageService from '../../app/service/localStorageService';
 
 import * as messages from '../../components/toastr';
 
-class ConsultaLancamento extends React.Component {
+class ConsultaLancamentos extends React.Component {
   constructor() {
     super();
     this.service = new LancamentoService();
@@ -60,7 +60,11 @@ class ConsultaLancamento extends React.Component {
   }
 
   editar = (id) => {
-    console.log('editando lancamento...', id);
+    // eslint-disable-next-line react/prop-types
+    const { history } = this.props;
+    // eslint-disable-next-line react/prop-types
+    history.push(`/cadastro-lancamentos/${id}`);
+    // console.log('editando lancamento...', id);
   }
 
   abrirConfirmacao = (lancamento) => {
@@ -88,6 +92,13 @@ class ConsultaLancamento extends React.Component {
     // console.log('deletando lancamento...', id);
   }
 
+  preparaFormularioCadastro = () => {
+    // eslint-disable-next-line react/prop-types
+    const { history } = this.props;
+    // eslint-disable-next-line react/prop-types
+    history.push('/cadastro-lancamentos');
+  }
+
   renderFooter() {
     return (
       <div>
@@ -97,6 +108,7 @@ class ConsultaLancamento extends React.Component {
           onClick={this.cancelarDelecao}
           className="p-button-text"
         />
+        <span> </span>
         <Button
           label="Confirmar"
           icon="pi pi-check"
@@ -188,10 +200,12 @@ class ConsultaLancamento extends React.Component {
                   >
                     Buscar
                   </button>
+                  <span> </span>
 
                   <button
                     type="button"
                     className="btn btn-danger"
+                    onClick={this.preparaFormularioCadastro}
                   >
                     Cadastrar
                   </button>
@@ -237,4 +251,4 @@ class ConsultaLancamento extends React.Component {
   }
 }
 
-export default withRouter(ConsultaLancamento);
+export default withRouter(ConsultaLancamentos);

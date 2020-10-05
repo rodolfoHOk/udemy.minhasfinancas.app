@@ -25,61 +25,36 @@ class CadastroUsuario extends React.Component {
   }
 
   cadastrar = () => {
-    const msgs = this.validar();
+    const {
+      nome, email, senha, senhaRepetida,
+    } = this.state;
 
-    if (msgs && msgs.length > 0) {
-      // eslint-disable-next-line no-unused-vars
-      msgs.forEach((msg, index) => {
-        mensagemErro(msg);
+    const usuario = {
+      nome,
+      email,
+      senha,
+      senhaRepetida,
+    };
+
+    try {
+      this.service.validar(usuario);
+    } catch (erro) {
+      const msgs = erro.mensagens;
+      msgs.forEach((msg) => mensagemErro(msg));
+      return;
+    }
+
+    this.service.salvar(usuario)
+      .then(() => {
+        mensagemSucesso('Usuario cadastrado. Faça o login para acessar o sistema.');
+        // eslint-disable-next-line react/prop-types
+        const { history } = this.props;
+        // eslint-disable-next-line react/prop-types
+        history.push('/login');
+      }).catch((erro) => {
+        mensagemErro(erro.response.data);
       });
-    } else {
-      const { nome } = this.state;
-      const { email } = this.state;
-      const { senha } = this.state;
-
-      const usuario = {
-        nome,
-        email,
-        senha,
-      };
-
-      this.service.salvar(usuario)
-        .then(() => {
-          mensagemSucesso('Usuario cadastrado. Faça o login para acessar o sistema.');
-          // eslint-disable-next-line react/prop-types
-          const { history } = this.props;
-          // eslint-disable-next-line react/prop-types
-          history.push('/login');
-        }).catch((erro) => {
-          mensagemErro(erro.response.data);
-        });
-      // console.log(this.state);
-    }
-  }
-
-  validar() {
-    const mensagens = [];
-    const { nome } = this.state;
-    if (!nome) {
-      mensagens.push('Campo nome é obrigatório.');
-    }
-
-    const { email } = this.state;
-    if (!email) {
-      mensagens.push('Campo email é obrigatório.');
-    } else if (!email.match(/^[a-z0-9]+@[a-z0-9]+\.[a-z]/)) {
-      mensagens.push('Email informado inválido.');
-    }
-
-    const { senha } = this.state;
-    const { senhaRepetida } = this.state;
-    if (!senha || !senhaRepetida) {
-      mensagens.push('Digite a senha duas vezes.');
-    } else if (senha !== senhaRepetida) {
-      mensagens.push('Senhas não coincidem');
-    }
-
-    return mensagens;
+    // console.log(this.state);
   }
 
   render() {
@@ -145,6 +120,7 @@ class CadastroUsuario extends React.Component {
                 >
                   Salvar
                 </button>
+                <span> </span>
                 <button
                   type="button"
                   onClick={this.voltar}

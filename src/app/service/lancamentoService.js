@@ -1,5 +1,7 @@
 import ApiService from '../apiservice';
 
+import ErroValidacao from '../exceptions/erroValidacao';
+
 export default class LancamentoService extends ApiService {
   constructor() {
     super('/api/lancamentos');
@@ -61,7 +63,47 @@ export default class LancamentoService extends ApiService {
     return this.get(params);
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  validar(lancamento) {
+    const erros = [];
+
+    if (!lancamento.descricao) {
+      erros.push('Campo descrição é obrigatório!');
+    }
+
+    if (!lancamento.ano) {
+      erros.push('Campo ano é obrigatório!');
+    }
+
+    if (!lancamento.mes) {
+      erros.push('Campo mês é obrigatório!');
+    }
+
+    if (!lancamento.valor) {
+      erros.push('Campo valor é obrigatório!');
+    }
+    if (!lancamento.tipo) {
+      erros.push('Selecione o tipo, é obrigatório!');
+    }
+
+    if (erros && erros.length > 0) {
+      throw new ErroValidacao(erros);
+    }
+  }
+
   deletar(id) {
     return this.delete(`/${id}`);
+  }
+
+  salvar(lancamento) {
+    return this.post('/', lancamento);
+  }
+
+  atualizar(lancamento) {
+    return this.put(`/${lancamento.id}`, lancamento);
+  }
+
+  obterPorId(id) {
+    return this.get(`/${id}`);
   }
 }
