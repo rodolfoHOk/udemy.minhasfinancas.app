@@ -3,8 +3,9 @@ import { withRouter } from 'react-router-dom';
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 import UsuarioService from '../app/service/usuarioService';
-import LocalStorageService from '../app/service/localStorageService';
+// import LocalStorageService from '../app/service/localStorageService';
 import { mensagemErro } from '../components/toastr';
+import { AuthContext } from '../main/provedorAutenticacao';
 
 class Login extends React.Component {
   constructor() {
@@ -23,7 +24,10 @@ class Login extends React.Component {
       email,
       senha,
     }).then((response) => {
-      LocalStorageService.adicionarItem('_usuario_logado', response.data);
+      // refatoramos para usar provedorAutenticacao
+      // LocalStorageService.adicionarItem('_usuario_logado', response.data);
+      const { iniciarSessao } = this.context;
+      iniciarSessao(response.data);
       // eslint-disable-next-line react/prop-types
       const { history } = this.props;
       // eslint-disable-next-line react/prop-types
@@ -82,14 +86,18 @@ class Login extends React.Component {
                         onClick={this.entrar}
                         className="btn btn-success"
                       >
+                        <i className="pi pi-sign-in" />
+                        {' '}
                         Entrar
                       </button>
-                      <span> </span>
+
                       <button
                         type="button"
                         onClick={this.prepareCadastrar}
                         className="btn btn-danger"
                       >
+                        <i className="pi pi-plus" />
+                        {' '}
                         Cadastrar
                       </button>
                     </fieldset>
@@ -103,5 +111,8 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.contextType = AuthContext;
+// só funciona para componentes de classe para função é outro método.
 
 export default withRouter(Login);

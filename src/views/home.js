@@ -1,5 +1,6 @@
 import React from 'react';
-import LocalStorageService from '../app/service/localStorageService';
+// import LocalStorageService from '../app/service/localStorageService';
+import { AuthContext } from '../main/provedorAutenticacao';
 import UsuarioService from '../app/service/usuarioService';
 import { mensagemErro } from '../components/toastr';
 
@@ -13,9 +14,10 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+    // const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+    const { usuarioAutenticado } = this.context;
 
-    this.usuarioService.obterSaldoPorUsuario(`${usuarioLogado.id}`)
+    this.usuarioService.obterSaldoPorUsuario(`${usuarioAutenticado.id}`)
       .then((response) => {
         this.setState({ saldo: response.data });
       }).catch((error) => {
@@ -45,18 +47,18 @@ class Home extends React.Component {
             href="#/cadastro-usuarios"
             role="button"
           >
-            <i className="fa fa-users" />
+            <i className="pi pi-users" />
+            {' '}
             Cadastrar Usuário
           </a>
-
-          <span> </span>
 
           <a
             className="btn btn-danger btn-lg"
             href="#/cadastro-lancamentos"
             role="button"
           >
-            <i className="fa fa-users" />
+            <i className="pi pi-money-bill" />
+            {' '}
             Cadastrar Lançamento
           </a>
         </p>
@@ -64,5 +66,7 @@ class Home extends React.Component {
     );
   }
 }
+
+Home.contextType = AuthContext;
 
 export default Home;

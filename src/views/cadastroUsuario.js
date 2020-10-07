@@ -118,14 +118,18 @@ class CadastroUsuario extends React.Component {
                   onClick={this.cadastrar}
                   className="btn btn-success"
                 >
+                  <i className="pi pi-save" />
+                  {' '}
                   Salvar
                 </button>
-                <span> </span>
+
                 <button
                   type="button"
                   onClick={this.voltar}
                   className="btn btn-danger"
                 >
+                  <i className="pi pi-chevron-left" />
+                  {' '}
                   Voltar
                 </button>
               </fieldset>

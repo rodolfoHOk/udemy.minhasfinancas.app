@@ -276,6 +276,8 @@ class CadastroLancamentos extends React.Component {
                     className="btn btn-success"
                     onClick={this.atualizar}
                   >
+                    <i className="pi pi-refresh" />
+                    {' '}
                     Atualizar
                   </button>
                 ) : (
@@ -284,12 +286,12 @@ class CadastroLancamentos extends React.Component {
                     className="btn btn-success"
                     onClick={this.submit}
                   >
+                    <i className="pi pi-save" />
+                    {' '}
                     Salvar
                   </button>
                 )
               }
-
-              <span> </span>
 
               <button
                 type="button"
@@ -301,6 +303,8 @@ class CadastroLancamentos extends React.Component {
                   history.push('/consulta-lancamentos');
                 }}
               >
+                <i className="pi pi-times" />
+                {' '}
                 Cancelar
               </button>
             </div>

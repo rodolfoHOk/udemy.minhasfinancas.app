@@ -91,6 +91,10 @@ export default class LancamentoService extends ApiService {
     }
   }
 
+  alterarStatus(id, status) {
+    return this.put(`/${id}/atualiza-status`, { status }); // { status } = const atualizaStatusDTO = { status: status }
+  }
+
   deletar(id) {
     return this.delete(`/${id}`);
   }

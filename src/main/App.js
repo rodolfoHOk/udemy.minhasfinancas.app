@@ -1,5 +1,7 @@
 import React from 'react';
 import Rotas from './rotas';
+import ProvedorAutenticacao from './provedorAutenticacao';
+
 import Navbar from '../components/navbar';
 
 // eslint-disable-next-line import/extensions
@@ -15,12 +17,12 @@ import 'primeicons/primeicons.css';
 
 function App() {
   return (
-    <>
+    <ProvedorAutenticacao>
       <Navbar />
       <div className="container">
         <Rotas />
       </div>
-    </>
+    </ProvedorAutenticacao>
   );
 }
 
