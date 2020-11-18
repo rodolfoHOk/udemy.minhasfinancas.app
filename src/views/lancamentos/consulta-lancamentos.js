@@ -10,13 +10,15 @@ import SelectMenu from '../../components/selectMenu';
 
 import LancamentosTable from './lancamentosTable';
 import LancamentoService from '../../app/service/lancamentoService';
-import LocalStorageService from '../../app/service/localStorageService';
+// import LocalStorageService from '../../app/service/localStorageService'; JWT
+
+import { AuthContext } from '../../main/provedorAutenticacao'; // JWT
 
 import * as messages from '../../components/toastr';
 
 class ConsultaLancamentos extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.service = new LancamentoService();
     this.state = {
       ano: '',
@@ -36,14 +38,16 @@ class ConsultaLancamentos extends React.Component {
     const { tipo } = this.state;
     const { descricao } = this.state;
 
-    const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+    const { usuarioAutenticado } = this.context; // JWT
+    // eslint-disable-next-line max-len
+    // const usuarioLogado = LocalStorageService.obterItem('_usuario_logado'); JWT: provedorAutenticacao.
 
     const lancamentoFiltro = {
       ano,
       mes,
       tipo,
       descricao,
-      usuario: usuarioLogado.id,
+      usuario: usuarioAutenticado.id, // JWT mudamos de usuarioLogado.
     };
 
     if (!ano) {
@@ -277,5 +281,7 @@ class ConsultaLancamentos extends React.Component {
     );
   }
 }
+
+ConsultaLancamentos.contextType = AuthContext; // JWT
 
 export default withRouter(ConsultaLancamentos);

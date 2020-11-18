@@ -4,6 +4,10 @@ import ErroValidacao from '../exceptions/erroValidacao';
 class UsuarioService extends ApiService {
   constructor() {
     super('/api/usuarios');
+    this.listaAutoridades = [
+      { label: 'Usuario', value: 'USUARIO' },
+      { label: 'Administrador', value: 'ADMINISTRADOR' },
+    ];
   }
 
   autenticar(credenciais) {
@@ -12,6 +16,20 @@ class UsuarioService extends ApiService {
 
   obterSaldoPorUsuario(id) {
     return this.get(`/${id}/saldo`);
+  }
+
+  /**
+   * JWT: retorna usuario atual logado, pois só temos o token no localstorage agora.
+   */
+  obterUsuarioAtualLogado() {
+    return this.get('/eu');
+  }
+
+  /**
+   * JWT: retorna a lista de autoridades
+   */
+  obterListaAutoridades() {
+    return this.listaAutoridades;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -40,7 +58,7 @@ class UsuarioService extends ApiService {
   }
 
   salvar(usuario) {
-    return this.post('/', usuario);
+    return this.post('/cadastrar', usuario);
   }
 }
 

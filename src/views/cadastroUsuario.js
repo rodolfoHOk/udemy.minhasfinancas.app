@@ -3,17 +3,20 @@ import { withRouter } from 'react-router-dom';
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 import UsuarioService from '../app/service/usuarioService';
+import SelectMenu from '../components/selectMenu';
 import { mensagemErro, mensagemSucesso } from '../components/toastr';
 
 class CadastroUsuario extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.service = new UsuarioService();
     this.state = {
       nome: '',
+      nomeUsuario: '',
       email: '',
       senha: '',
       senhaRepetida: '',
+      autoridade: 'USUARIO',
     };
   }
 
@@ -26,14 +29,16 @@ class CadastroUsuario extends React.Component {
 
   cadastrar = () => {
     const {
-      nome, email, senha, senhaRepetida,
+      nome, nomeUsuario, email, senha, senhaRepetida, autoridade,
     } = this.state;
 
     const usuario = {
       nome,
+      nomeUsuario,
       email,
       senha,
       senhaRepetida,
+      autoridade,
     };
 
     try {
@@ -59,9 +64,14 @@ class CadastroUsuario extends React.Component {
 
   render() {
     const { nome } = this.state;
+    const { nomeUsuario } = this.state;
     const { email } = this.state;
     const { senha } = this.state;
     const { senhaRepetida } = this.state;
+    const { autoridade } = this.state;
+
+    const listaAutoridades = this.service.obterListaAutoridades();
+
     return (
       <Card title="Cadastro de Usuário">
         <div className="row">
@@ -77,6 +87,17 @@ class CadastroUsuario extends React.Component {
                     placeholder="Digite o Nome"
                     value={nome}
                     onChange={(e) => this.setState({ nome: e.target.value })}
+                  />
+                </FormGroup>
+                <FormGroup label="Nome de Usuário: *" htmlFor="inputNomeUsuario">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputNomeUsuario"
+                    name="nomeUsuario"
+                    placeholder="Digite o Nome de Usuário"
+                    value={nomeUsuario}
+                    onChange={(e) => this.setState({ nomeUsuario: e.target.value })}
                   />
                 </FormGroup>
                 <FormGroup label="Email: *" htmlFor="inputEmail">
@@ -111,6 +132,16 @@ class CadastroUsuario extends React.Component {
                     placeholder="Password"
                     value={senhaRepetida}
                     onChange={(e) => this.setState({ senhaRepetida: e.target.value })}
+                  />
+                </FormGroup>
+                <FormGroup label="Autoridade: *" htmlfor="inputAutoridade">
+                  <SelectMenu
+                    className="form-control"
+                    id="inputAutoridade"
+                    lista={listaAutoridades}
+                    value={autoridade}
+                    name="autoridade"
+                    onChange={(e) => this.setState({ autoridade: e.target.value })}
                   />
                 </FormGroup>
                 <button

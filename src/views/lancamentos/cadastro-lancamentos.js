@@ -6,13 +6,15 @@ import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/selectMenu';
 
 import LancamentoService from '../../app/service/lancamentoService';
-import LocalStorageService from '../../app/service/localStorageService';
+// import LocalStorageService from '../../app/service/localStorageService'; JWT
+
+import { AuthContext } from '../../main/provedorAutenticacao'; // JWT
 
 import * as messages from '../../components/toastr';
 
 class CadastroLancamentos extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.service = new LancamentoService();
     this.state = {
       id: null,
@@ -62,7 +64,8 @@ class CadastroLancamentos extends React.Component {
       descricao, ano, mes, valor, tipo,
     } = this.state;
 
-    const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
+    // const usuarioLogado = LocalStorageService.obterItem('_usuario_logado'); JWT
+    const { usuarioAutenticado } = this.context;
 
     const lancamentoACadastrar = {
       descricao,
@@ -70,7 +73,7 @@ class CadastroLancamentos extends React.Component {
       mes,
       valor,
       tipo,
-      usuario: usuarioLogado.id,
+      usuario: usuarioAutenticado.id, // JWT mudamos de usuarioLogado.
     };
 
     try {
@@ -314,5 +317,7 @@ class CadastroLancamentos extends React.Component {
     );
   }
 }
+
+CadastroLancamentos.contextType = AuthContext; // JWT
 
 export default withRouter(CadastroLancamentos);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+// import axios from 'axios'; // para teste
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 import UsuarioService from '../app/service/usuarioService';
@@ -8,34 +9,35 @@ import { mensagemErro } from '../components/toastr';
 import { AuthContext } from '../main/provedorAutenticacao';
 
 class Login extends React.Component {
-  constructor() {
-    super();
-    this.service = new UsuarioService();
+  constructor(props) {
+    super(props);
     this.state = {
-      email: '',
+      nomeUsuarioOuEmail: '',
       senha: '',
     };
+    this.service = new UsuarioService();
   }
 
   entrar = () => {
-    const { email } = this.state;
+    const { nomeUsuarioOuEmail } = this.state;
     const { senha } = this.state;
+
     this.service.autenticar({
-      email,
+      nomeUsuarioOuEmail,
       senha,
     }).then((response) => {
       // refatoramos para usar provedorAutenticacao
       // LocalStorageService.adicionarItem('_usuario_logado', response.data);
       const { iniciarSessao } = this.context;
-      iniciarSessao(response.data);
+      iniciarSessao(response.data.token); // JWT: response.data para response.token;
       // eslint-disable-next-line react/prop-types
       const { history } = this.props;
       // eslint-disable-next-line react/prop-types
       history.push('/home');
       // console.log(response)
     }).catch((erro) => {
-      mensagemErro(erro.response.data);
-      // console.log(erro.response)
+      // eslint-disable-next-line prefer-template
+      mensagemErro(erro.response.data.status + ': ' + erro.response.data.message);
     });
     // console.log("Email: ", this.state.email)
     // console.log("Senha: ", this.state.senha)
@@ -49,7 +51,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email } = this.state;
+    const { nomeUsuarioOuEmail } = this.state;
     const { senha } = this.state;
     return (
       <div className="row">
@@ -60,15 +62,14 @@ class Login extends React.Component {
                 <div className="col-lg-12">
                   <div className="bs-component">
                     <fieldset>
-                      <FormGroup label="Email: *" htmlFor="exampleInputEmail1">
+                      <FormGroup label="Nome de Usuário ou Email: *" htmlFor="InputNomeUsuarioOuEmail">
                         <input
-                          type="email"
+                          type="text"
                           className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          placeholder="Digite o Email"
-                          value={email}
-                          onChange={(e) => this.setState({ email: e.target.value })}
+                          id="InputNomeUsuarioOuEmail"
+                          placeholder="Digite o Nome de Usuário ou Email"
+                          value={nomeUsuarioOuEmail}
+                          onChange={(e) => this.setState({ nomeUsuarioOuEmail: e.target.value })}
                         />
                       </FormGroup>
                       <FormGroup label="Senha: *" htmlFor="exampleInputPassword1">

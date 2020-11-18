@@ -5,8 +5,8 @@ import UsuarioService from '../app/service/usuarioService';
 import { mensagemErro } from '../components/toastr';
 
 class Home extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.usuarioService = new UsuarioService();
     this.state = {
       saldo: 0,

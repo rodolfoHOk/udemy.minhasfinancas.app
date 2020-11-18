@@ -4,8 +4,7 @@ class LocalStorageService {
   }
 
   static obterItem(chave) {
-    const item = localStorage.getItem(chave);
-    return JSON.parse(item);
+    return localStorage.getItem(chave);
   }
 
   static removerItem(chave) {
