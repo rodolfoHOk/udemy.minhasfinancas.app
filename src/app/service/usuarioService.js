@@ -24,8 +24,16 @@ class UsuarioService extends ApiService {
   validarAutenticacao(loginRequest) {
     const erros = [];
 
+    if (!loginRequest.nomeUsuarioOuEmail) {
+      erros.push('Campo nome de usuário ou email é obrigatorio');
+    }
+
     if (loginRequest.nomeUsuarioOuEmail > TAMANHO_MAX_EMAIL) {
       erros.push(`Campo nome de usuário ou email tem que ter no máximo ${TAMANHO_MAX_EMAIL} caracteres.`);
+    }
+
+    if (!loginRequest.senha) {
+      erros.push('Campo senha é obrigatorio');
     }
 
     if (loginRequest.senha < TAMANHO_MIN_SENHA) {
