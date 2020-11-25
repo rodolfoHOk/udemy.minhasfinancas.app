@@ -22,6 +22,19 @@ class Login extends React.Component {
     const { nomeUsuarioOuEmail } = this.state;
     const { senha } = this.state;
 
+    const loginRequest = {
+      nomeUsuarioOuEmail,
+      senha,
+    };
+
+    try {
+      this.service.validarAutenticacao(loginRequest);
+    } catch (erro) {
+      const msgs = erro.mensagens;
+      msgs.forEach((msg) => mensagemErro(msg));
+      return;
+    }
+
     this.service.autenticar({
       nomeUsuarioOuEmail,
       senha,

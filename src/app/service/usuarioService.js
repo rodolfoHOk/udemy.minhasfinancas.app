@@ -1,5 +1,15 @@
 import ApiService from '../apiservice';
 import ErroValidacao from '../exceptions/erroValidacao';
+import {
+  TAMANHO_MIN_NOME,
+  TAMANHO_MAX_NOME,
+  TAMANHO_MIN_NOME_USUARIO,
+  TAMANHO_MAX_NOME_USUARIO,
+  TAMANHO_MAX_EMAIL,
+  TAMANHO_MIN_SENHA,
+  TAMANHO_MAX_SENHA,
+  REGEX_EMAIL,
+} from '../exceptions/constantesValidacao';
 
 class UsuarioService extends ApiService {
   constructor() {
@@ -8,6 +18,27 @@ class UsuarioService extends ApiService {
       { label: 'Usuario', value: 'USUARIO' },
       { label: 'Administrador', value: 'ADMINISTRADOR' },
     ];
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  validarAutenticacao(loginRequest) {
+    const erros = [];
+
+    if (loginRequest.nomeUsuarioOuEmail > TAMANHO_MAX_EMAIL) {
+      erros.push(`Campo nome de usuário ou email tem que ter no máximo ${TAMANHO_MAX_EMAIL} caracteres.`);
+    }
+
+    if (loginRequest.senha < TAMANHO_MIN_SENHA) {
+      erros.push(`Campo senha tem que ter no mínimo ${TAMANHO_MIN_SENHA} caracteres.`);
+    }
+
+    if (loginRequest.senha > TAMANHO_MAX_SENHA) {
+      erros.push(`Campo senha tem que ter no máximo ${TAMANHO_MAX_SENHA} caracteres.`);
+    }
+
+    if (erros && erros.length > 0) {
+      throw new ErroValidacao(erros);
+    }
   }
 
   autenticar(credenciais) {
@@ -40,16 +71,48 @@ class UsuarioService extends ApiService {
       erros.push('Campo nome é obrigatório.');
     }
 
+    if (usuario.nome < TAMANHO_MIN_NOME) {
+      erros.push(`Campo nome tem que ter no mínimo ${TAMANHO_MIN_NOME} caracteres.`);
+    }
+
+    if (usuario.nome > TAMANHO_MAX_NOME) {
+      erros.push(`Campo nome tem que ter no máximo ${TAMANHO_MAX_NOME} caracteres.`);
+    }
+
+    if (!usuario.nomeUsuario) {
+      erros.push('Nome de usuário é obrigatorio');
+    }
+
+    if (usuario.nomeUsuario < TAMANHO_MIN_NOME_USUARIO) {
+      erros.push(`Campo nome de usuário tem que ter no mínimo ${TAMANHO_MIN_NOME_USUARIO} caracteres.`);
+    }
+
+    if (usuario.nomeUsuario > TAMANHO_MAX_NOME_USUARIO) {
+      erros.push(`Campo nome de usuário tem que ter no máximo ${TAMANHO_MAX_NOME_USUARIO} caracteres.`);
+    }
+
     if (!usuario.email) {
       erros.push('Campo email é obrigatório.');
-    } else if (!usuario.email.match(/^[a-z0-9]+@[a-z0-9]+\.[a-z]/)) {
+    } else if (!usuario.email.match(REGEX_EMAIL)) {
       erros.push('Email informado inválido.');
+    }
+
+    if (usuario.email > TAMANHO_MAX_EMAIL) {
+      erros.push(`Campo email tem que ter no máximo ${TAMANHO_MAX_EMAIL} caracteres.`);
     }
 
     if (!usuario.senha || !usuario.senhaRepetida) {
       erros.push('Digite a senha duas vezes.');
     } else if (usuario.senha !== usuario.senhaRepetida) {
       erros.push('Senhas não coincidem');
+    }
+
+    if (usuario.senha < TAMANHO_MIN_SENHA) {
+      erros.push(`Campo senha tem que ter no mínimo ${TAMANHO_MIN_SENHA} caracteres.`);
+    }
+
+    if (usuario.senha > TAMANHO_MAX_SENHA) {
+      erros.push(`Campo senha tem que ter no máximo ${TAMANHO_MAX_SENHA} caracteres.`);
     }
 
     if (erros && erros.length > 0) {
