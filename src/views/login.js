@@ -43,12 +43,14 @@ class Login extends React.Component {
     // console.log("Senha: ", this.state.senha)
   }
 
+  /* removido somente administradores agora! removido também o botão cadastrar
   prepareCadastrar = () => {
     // eslint-disable-next-line react/prop-types
     const { history } = this.props;
     // eslint-disable-next-line react/prop-types
     history.push('/cadastro-usuarios');
   }
+  */
 
   render() {
     const { nomeUsuarioOuEmail } = this.state;
@@ -90,16 +92,6 @@ class Login extends React.Component {
                         <i className="pi pi-sign-in" />
                         {' '}
                         Entrar
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={this.prepareCadastrar}
-                        className="btn btn-danger"
-                      >
-                        <i className="pi pi-plus" />
-                        {' '}
-                        Cadastrar
                       </button>
                     </fieldset>
                   </div>

@@ -13,6 +13,7 @@ class ProvedorAutenticacao extends React.Component {
     this.state = {
       usuarioAutenticado: null,
       isAutenticado: false,
+      isAdmin: false,
     };
     this.service = new UsuarioService();
   }
@@ -33,7 +34,11 @@ class ProvedorAutenticacao extends React.Component {
     AuthService.logarJwt(token);
     this.service.obterUsuarioAtualLogado()
       .then((response) => {
-        this.setState({ isAutenticado: true, usuarioAutenticado: response.data });
+        this.setState({
+          isAutenticado: true,
+          usuarioAutenticado: response.data,
+          isAdmin: response.data.isAdmin,
+        });
       })
       .catch((erro) => {
         mensagemErro(erro.response.data);
@@ -42,16 +47,18 @@ class ProvedorAutenticacao extends React.Component {
 
   encerrarSessao = () => {
     AuthService.deslogarJwt();
-    this.setState({ isAutenticado: false, usuarioAutenticado: null });
+    this.setState({ isAutenticado: false, usuarioAutenticado: null, isAdmin: false });
   }
 
   render() {
     const { usuarioAutenticado } = this.state;
     const { isAutenticado } = this.state;
+    const { isAdmin } = this.state;
 
     const contexto = {
       usuarioAutenticado,
       isAutenticado,
+      isAdmin,
       iniciarSessao: this.iniciarSessao,
       encerrarSessao: this.encerrarSessao,
     };

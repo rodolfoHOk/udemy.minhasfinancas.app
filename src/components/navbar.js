@@ -19,6 +19,8 @@ function Navbar(props) {
   // eslint-disable-next-line react/prop-types
   const { isUsuarioAutenticado } = props;
   // eslint-disable-next-line react/prop-types
+  const { isAdmin } = props;
+  // eslint-disable-next-line react/prop-types
   const { deslogar } = props;
   return (
     <div className="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
@@ -38,9 +40,10 @@ function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav">
             <NavbarItem render={isUsuarioAutenticado} label="Home" href="#/home" />
-            <NavbarItem render={isUsuarioAutenticado} label="Usuários" href="#/cadastro-usuarios" />
+            <NavbarItem render={isUsuarioAutenticado && isAdmin} label="Usuários" href="#/cadastro-usuarios" />
             <NavbarItem render={isUsuarioAutenticado} label="Lancamentos" href="#/consulta-lancamentos" />
-            <NavbarItem render={isUsuarioAutenticado} label="Sair" href="#/login" onClick={deslogar} />
+            <NavbarItem render={isUsuarioAutenticado} label="Sair/Deslogar" href="#/login" onClick={deslogar} />
+            <NavbarItem render={!isUsuarioAutenticado} label="Logar" href="#/login" />
           </ul>
         </div>
       </div>
@@ -51,7 +54,11 @@ function Navbar(props) {
 export default () => (
   <AuthConsumer>
     {(context) => (
-      <Navbar isUsuarioAutenticado={context.isAutenticado} deslogar={context.encerrarSessao} />
+      <Navbar
+        isUsuarioAutenticado={context.isAutenticado}
+        isAdmin={context.isAdmin}
+        deslogar={context.encerrarSessao}
+      />
     )}
   </AuthConsumer>
 );
