@@ -1,6 +1,6 @@
 import ApiService from '../apiservice';
-
 import ErroValidacao from '../exceptions/erroValidacao';
+import { TAMANHO_MIN_DESCRICAO, TAMANHO_MAX_DESCRICAO } from '../exceptions/constantesValidacao';
 
 export default class LancamentoService extends ApiService {
   constructor() {
@@ -71,17 +71,38 @@ export default class LancamentoService extends ApiService {
       erros.push('Campo descrição é obrigatório!');
     }
 
+    if (lancamento.descricao.length < 2) {
+      erros.push(`Campo descrição tem que ter no mínimo ${TAMANHO_MIN_DESCRICAO} caracteres!`);
+    }
+
+    if (lancamento.descricao.length > 512) {
+      erros.push(`Campo descrição tem que ter no máximo ${TAMANHO_MAX_DESCRICAO} caracteres!`);
+    }
+
     if (!lancamento.ano) {
       erros.push('Campo ano é obrigatório!');
+    }
+
+    if (lancamento.ano.toString().length !== 4) {
+      erros.push('Campo ano tem que ter 4 digitos!');
     }
 
     if (!lancamento.mes) {
       erros.push('Campo mês é obrigatório!');
     }
 
+    if (lancamento.mes < 1 || lancamento.mes > 12) {
+      erros.push('Campo mes deve ter valor entre 1 e 12');
+    }
+
     if (!lancamento.valor) {
       erros.push('Campo valor é obrigatório!');
     }
+
+    if (lancamento.valor < 0.01) {
+      erros.push('Campo valor em que ser maior ou igual a 0.01');
+    }
+
     if (!lancamento.tipo) {
       erros.push('Selecione o tipo, é obrigatório!');
     }
