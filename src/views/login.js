@@ -39,15 +39,18 @@ class Login extends React.Component {
       nomeUsuarioOuEmail,
       senha,
     }).then((response) => {
+      // console.log(response);
       // refatoramos para usar provedorAutenticacao
       // LocalStorageService.adicionarItem('_usuario_logado', response.data);
       const { iniciarSessao } = this.context;
       iniciarSessao(response.data.token); // JWT: response.data para response.token;
       // eslint-disable-next-line react/prop-types
       const { history } = this.props;
-      // eslint-disable-next-line react/prop-types
-      history.push('/home');
-      // console.log(response)
+      setTimeout(() => {
+        // eslint-disable-next-line react/prop-types
+        history.push('/home');
+      }, 500);
+      // console.log(response);
     }).catch((erro) => {
       // eslint-disable-next-line prefer-template
       mensagemErro(erro.response.data.status + ': ' + erro.response.data.message);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 // import LocalStorageService from '../app/service/localStorageService';
 import currencyFormatter from 'currency-formatter';
 import { AuthContext } from '../main/provedorAutenticacao';
@@ -30,7 +31,6 @@ class Home extends React.Component {
   render() {
     const { saldo } = this.state;
     const { isAdmin } = this.context;
-    console.log(isAdmin);
 
     return (
       <div className="jumbotron">
@@ -50,7 +50,6 @@ class Home extends React.Component {
           {
             isAdmin ? (
               <a
-                render={isAdmin}
                 className="btn btn-primary btn-lg"
                 href="#/cadastro-usuarios"
                 role="button"
@@ -79,4 +78,4 @@ class Home extends React.Component {
 
 Home.contextType = AuthContext;
 
-export default Home;
+export default withRouter(Home);
