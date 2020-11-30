@@ -24,7 +24,7 @@ class CadastroUsuario extends React.Component {
     // eslint-disable-next-line react/prop-types
     const { history } = this.props;
     // eslint-disable-next-line react/prop-types
-    history.push('/login');
+    history.push('/home');
   }
 
   cadastrar = () => {

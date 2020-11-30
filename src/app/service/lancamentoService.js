@@ -27,6 +27,13 @@ export default class LancamentoService extends ApiService {
       { label: 'Receita', value: 'RECEITA' },
       { label: 'Despesa', value: 'DESPESA' },
     ];
+
+    this.listaStatus = [
+      { label: 'SELECIONE...', value: '' },
+      { label: 'Pendente', value: 'PENDENTE' },
+      { label: 'Efetivado', value: 'EFETIVADO' },
+      { label: 'Cancelado', value: 'CANCELADO' },
+    ];
   }
 
   obterListaMeses() {
@@ -35,6 +42,10 @@ export default class LancamentoService extends ApiService {
 
   obterListaTipos() {
     return this.tipos;
+  }
+
+  obterListaStatus() {
+    return this.listaStatus;
   }
 
   consultar(lancamentoFiltro) {

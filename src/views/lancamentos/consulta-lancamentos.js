@@ -24,6 +24,7 @@ class ConsultaLancamentos extends React.Component {
       ano: '',
       mes: '',
       tipo: '',
+      status: '',
       descricao: '',
       showConfirmDialog: false,
       lancamentoADeletar: {},
@@ -36,6 +37,7 @@ class ConsultaLancamentos extends React.Component {
     const { ano } = this.state;
     const { mes } = this.state;
     const { tipo } = this.state;
+    const { status } = this.state;
     const { descricao } = this.state;
 
     const { usuarioAutenticado } = this.context; // JWT
@@ -46,6 +48,7 @@ class ConsultaLancamentos extends React.Component {
       ano,
       mes,
       tipo,
+      status,
       descricao,
       usuario: usuarioAutenticado.id, // JWT mudamos de usuarioLogado.
     };
@@ -150,6 +153,7 @@ class ConsultaLancamentos extends React.Component {
     const { ano } = this.state;
     const { mes } = this.state;
     const { tipo } = this.state;
+    const { status } = this.state;
     const { descricao } = this.state;
     const { lancamentos } = this.state;
 
@@ -157,6 +161,7 @@ class ConsultaLancamentos extends React.Component {
 
     const listaMeses = this.service.obterListaMeses();
     const listaTipos = this.service.obterListaTipos();
+    const listaStatus = this.service.obterListaStatus();
 
     /* somente para testar o front end
     const lancamentosTeste = [
@@ -188,6 +193,14 @@ class ConsultaLancamentos extends React.Component {
                     />
                   </FormGroup>
 
+                </fieldset>
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="bs-component">
+                <fieldset>
+
                   <FormGroup label="Mês: " htmlfor="inputMes">
                     <SelectMenu
                       className="form-control"
@@ -198,6 +211,16 @@ class ConsultaLancamentos extends React.Component {
 
                     />
                   </FormGroup>
+
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="bs-component">
+                <fieldset>
 
                   <FormGroup label="Descrição: " htmlfor="inputDescricao">
                     <input
@@ -210,6 +233,16 @@ class ConsultaLancamentos extends React.Component {
                     />
                   </FormGroup>
 
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="bs-component">
+                <fieldset>
+
                   <FormGroup label="Tipo Lançamento: " htmlfor="inputTipo">
                     <SelectMenu
                       className="form-control"
@@ -219,6 +252,34 @@ class ConsultaLancamentos extends React.Component {
                       onChange={(e) => this.setState({ tipo: e.target.value })}
                     />
                   </FormGroup>
+
+                </fieldset>
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="bs-component">
+                <fieldset>
+
+                  <FormGroup label="Status Lançamento: " htmlfor="inputStatus">
+                    <SelectMenu
+                      className="form-control"
+                      id="inputStatus"
+                      lista={listaStatus}
+                      value={status}
+                      onChange={(e) => this.setState({ status: e.target.value })}
+                    />
+                  </FormGroup>
+
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="bs-component">
+                <fieldset>
 
                   <button
                     type="button"
