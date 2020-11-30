@@ -244,8 +244,6 @@ class CadastroLancamentos extends React.Component {
                     defaultValue={valor}
                     config={currencyConfig}
                     onChange={this.handleChangeValor}
-                    autoFocus
-                    autoSelect
                   />
                 </FormGroup>
 
