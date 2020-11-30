@@ -29,6 +29,9 @@ class Home extends React.Component {
 
   render() {
     const { saldo } = this.state;
+    const { isAdmin } = this.context;
+    console.log(isAdmin);
+
     return (
       <div className="jumbotron">
         <h1 className="display-3">Bem vindo!</h1>
@@ -44,15 +47,20 @@ class Home extends React.Component {
           utilize um dos menus ou botões abaixo para navegar pelo sistema.
         </p>
         <p className="lead">
-          <a
-            className="btn btn-primary btn-lg"
-            href="#/cadastro-usuarios"
-            role="button"
-          >
-            <i className="pi pi-users" />
-            {' '}
-            Cadastrar Usuário
-          </a>
+          {
+            isAdmin ? (
+              <a
+                render={isAdmin}
+                className="btn btn-primary btn-lg"
+                href="#/cadastro-usuarios"
+                role="button"
+              >
+                <i className="pi pi-users" />
+                {' '}
+                Cadastrar Usuário
+              </a>
+            ) : null
+          }
 
           <a
             className="btn btn-danger btn-lg"
