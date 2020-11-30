@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 
+import IntlCurrencyInput from 'react-intl-currency-input';
+
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
 import SelectMenu from '../../components/selectMenu';
@@ -57,6 +59,11 @@ class CadastroLancamentos extends React.Component {
     const { name } = event.target;
 
     this.setState({ [name]: value });
+  }
+
+  handleChangeValor = (event, value) => {
+    event.preventDefault();
+    this.setState({ valor: value });
   }
 
   submit = () => {
@@ -144,6 +151,20 @@ class CadastroLancamentos extends React.Component {
     const listaMeses = this.service.obterListaMeses();
     const listaTipos = this.service.obterListaTipos();
 
+    const currencyConfig = {
+      locale: 'pt-BR',
+      formats: {
+        number: {
+          BRL: {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          },
+        },
+      },
+    };
+
     return (
       <Card title={atualizando ? 'Atualização de Lançamento' : 'Cadastro de Lançamento'}>
         <div className="row">
@@ -215,14 +236,16 @@ class CadastroLancamentos extends React.Component {
               <fieldset>
 
                 <FormGroup label="Valor: *" htmlfor="inputValor">
-                  <input
-                    type="text"
+                  <IntlCurrencyInput
                     className="form-control"
                     id="inputValor"
-                    placeholder="Digite o Valor"
-                    value={valor}
                     name="valor"
-                    onChange={this.handleChange}
+                    currency="BRL"
+                    defaultValue={valor}
+                    config={currencyConfig}
+                    onChange={this.handleChangeValor}
+                    autoFocus
+                    autoSelect
                   />
                 </FormGroup>
 

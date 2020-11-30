@@ -1,5 +1,6 @@
 import React from 'react';
 // import LocalStorageService from '../app/service/localStorageService';
+import currencyFormatter from 'currency-formatter';
 import { AuthContext } from '../main/provedorAutenticacao';
 import UsuarioService from '../app/service/usuarioService';
 import { mensagemErro } from '../components/toastr';
@@ -33,8 +34,9 @@ class Home extends React.Component {
         <h1 className="display-3">Bem vindo!</h1>
         <p className="lead">Esse é seu sistema de finanças.</p>
         <p className="lead">
-          Seu saldo para o mês atual é de R$
-          {saldo}
+          Seu saldo para o mês atual é de
+          <span> </span>
+          {currencyFormatter.format(saldo, { locale: 'pt-BR' })}
         </p>
         <hr className="my-4" />
         <p>
