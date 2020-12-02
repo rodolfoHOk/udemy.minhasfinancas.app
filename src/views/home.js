@@ -42,7 +42,6 @@ class Home extends React.Component {
   buscarPendentes = () => {
     const { usuarioAutenticado } = this.context;
     const anoAtual = new Date().getFullYear();
-    console.log(anoAtual);
 
     const lancamentoFiltro = {
       ano: anoAtual,
