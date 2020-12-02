@@ -176,22 +176,26 @@ class Home extends React.Component {
             </a>
           </p>
         </div>
-        <div>
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="bs-component">
-                <h3>Lançamentos pendentes do Ano</h3>
-                <LancamentosTable
-                  lancamentos={lancamentos}
-                  editeAction={this.editar}
-                  deleteAction={this.abrirConfirmacao}
-                  alterarStatusAction={this.alterarStatus}
-                />
 
+        { lancamentos.length > 0 ? (
+          <div>
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="bs-component">
+                  <h3>Lançamentos pendentes do Ano</h3>
+                  <LancamentosTable
+                    lancamentos={lancamentos}
+                    editeAction={this.editar}
+                    deleteAction={this.abrirConfirmacao}
+                    alterarStatusAction={this.alterarStatus}
+                  />
+
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : null }
+
         <div>
 
           <Dialog
