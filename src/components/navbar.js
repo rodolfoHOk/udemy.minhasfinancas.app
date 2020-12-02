@@ -40,7 +40,7 @@ function Navbar(props) {
         <div className="collapse navbar-collapse" id="navbarResponsive">
           <ul className="navbar-nav">
             <NavbarItem render={isUsuarioAutenticado} label="Home" href="#/home" />
-            <NavbarItem render={isUsuarioAutenticado && isAdmin} label="Usuários" href="#/cadastro-usuarios" />
+            <NavbarItem render={isUsuarioAutenticado && isAdmin} label="Usuários" href="#/consulta-usuarios" />
             <NavbarItem render={isUsuarioAutenticado} label="Lancamentos" href="#/consulta-lancamentos" />
             <NavbarItem render={isUsuarioAutenticado} label="Sair/Deslogar" href="#/login" onClick={deslogar} />
             <NavbarItem render={!isUsuarioAutenticado} label="Logar" href="#/login" />

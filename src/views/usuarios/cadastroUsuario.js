@@ -1,23 +1,50 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Card from '../components/card';
-import FormGroup from '../components/form-group';
-import UsuarioService from '../app/service/usuarioService';
-import SelectMenu from '../components/selectMenu';
-import { mensagemErro, mensagemSucesso } from '../components/toastr';
+import Card from '../../components/card';
+import FormGroup from '../../components/form-group';
+import UsuarioService from '../../app/service/usuarioService';
+import SelectMenu from '../../components/selectMenu';
+import { mensagemErro, mensagemSucesso } from '../../components/toastr';
+import { AuthContext } from '../../main/provedorAutenticacao';
 
 class CadastroUsuario extends React.Component {
   constructor(props) {
     super(props);
     this.service = new UsuarioService();
     this.state = {
+      id: null,
       nome: '',
       nomeUsuario: '',
       email: '',
       senha: '',
       senhaRepetida: '',
-      autoridade: 'USUARIO',
+      autoridade: '',
+      atualizando: false,
     };
+  }
+
+  componentDidMount() {
+    // eslint-disable-next-line react/prop-types, react/destructuring-assignment
+    const { params } = this.props.match;
+    // eslint-disable-next-line react/prop-types
+    if (params.id) {
+      // eslint-disable-next-line react/prop-types
+      this.service.obterPorId(params.id)
+        .then((resposta) => {
+          this.setState({ ...resposta.data, atualizando: true });
+          for (let index = 0; index < resposta.data.autoridades.length; index += 1) {
+            if (resposta.data.autoridades[index].nome === 'ADMINISTRADOR') {
+              this.setState({ autoridade: 'ADMINISTRADOR' });
+            }
+          }
+          const { autoridade } = this.state;
+          if (autoridade === '') {
+            this.setState({ autoridade: 'USUARIO' });
+          }
+        }).catch((erro) => {
+          mensagemErro(erro.response.data);
+        });
+    }
   }
 
   voltar = () => {
@@ -32,7 +59,7 @@ class CadastroUsuario extends React.Component {
       nome, nomeUsuario, email, senha, senhaRepetida, autoridade,
     } = this.state;
 
-    const usuario = {
+    const usuarioACadastrar = {
       nome,
       nomeUsuario,
       email,
@@ -42,14 +69,14 @@ class CadastroUsuario extends React.Component {
     };
 
     try {
-      this.service.validar(usuario);
+      this.service.validar(usuarioACadastrar);
     } catch (erro) {
       const msgs = erro.mensagens;
       msgs.forEach((msg) => mensagemErro(msg));
       return;
     }
 
-    this.service.salvar(usuario)
+    this.service.salvar(usuarioACadastrar)
       .then(() => {
         mensagemSucesso('Usuario cadastrado. Faça o login para acessar o sistema.');
         // eslint-disable-next-line react/prop-types
@@ -62,6 +89,41 @@ class CadastroUsuario extends React.Component {
     // console.log(this.state);
   }
 
+  atualizar = () => {
+    const {
+      id, nome, nomeUsuario, email, senha, senhaRepetida, autoridade,
+    } = this.state;
+
+    const usuarioAAtualizar = {
+      id,
+      nome,
+      nomeUsuario,
+      email,
+      senha,
+      senhaRepetida,
+      autoridade,
+    };
+
+    try {
+      this.service.validar(usuarioAAtualizar);
+    } catch (erro) {
+      const msgs = erro.mensagens;
+      msgs.forEach((msg) => mensagemErro(msg));
+      return;
+    }
+
+    this.service.atualizar(usuarioAAtualizar)
+      .then(() => {
+        mensagemSucesso('Usuario atualizado.');
+        // eslint-disable-next-line react/prop-types
+        const { history } = this.props;
+        // eslint-disable-next-line react/prop-types
+        history.push('/consulta-usuarios');
+      }).catch((erro) => {
+        mensagemErro(erro.response.data);
+      });
+  }
+
   render() {
     const { nome } = this.state;
     const { nomeUsuario } = this.state;
@@ -69,11 +131,12 @@ class CadastroUsuario extends React.Component {
     const { senha } = this.state;
     const { senhaRepetida } = this.state;
     const { autoridade } = this.state;
+    const { atualizando } = this.state;
 
     const listaAutoridades = this.service.obterListaAutoridades();
 
     return (
-      <Card title="Cadastro de Usuário">
+      <Card title={atualizando ? 'Atualização de Usuário' : 'Cadastro de Usuário'}>
         <div className="row">
           <div className="col-lg-12">
             <div className="bs-component">
@@ -144,15 +207,27 @@ class CadastroUsuario extends React.Component {
                     onChange={(e) => this.setState({ autoridade: e.target.value })}
                   />
                 </FormGroup>
-                <button
-                  type="button"
-                  onClick={this.cadastrar}
-                  className="btn btn-success"
-                >
-                  <i className="pi pi-save" />
-                  {' '}
-                  Salvar
-                </button>
+                { atualizando ? (
+                  <button
+                    type="button"
+                    onClick={this.atualizar}
+                    className="btn btn-success"
+                  >
+                    <i className="pi pi-save" />
+                    {' '}
+                    Atualizar
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={this.cadastrar}
+                    className="btn btn-success"
+                  >
+                    <i className="pi pi-save" />
+                    {' '}
+                    Salvar
+                  </button>
+                )}
 
                 <button
                   type="button"
@@ -171,5 +246,7 @@ class CadastroUsuario extends React.Component {
     );
   }
 }
+
+CadastroUsuario.contextType = AuthContext;
 
 export default withRouter(CadastroUsuario);

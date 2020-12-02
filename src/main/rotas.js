@@ -6,10 +6,11 @@ import {
 import { AuthConsumer } from './provedorAutenticacao';
 
 import Login from '../views/login';
-import CadastroUsuario from '../views/cadastroUsuario';
+import CadastroUsuario from '../views/usuarios/cadastroUsuario';
 import Home from '../views/home';
 import ConsultaLancamentos from '../views/lancamentos/consulta-lancamentos';
 import CadastroLancamentos from '../views/lancamentos/cadastro-lancamentos';
+import ConsultaUsuarios from '../views/usuarios/consultaUsuarios';
 
 // eslint-disable-next-line react/prop-types
 function RotaAutenticada({ component: Component, isUsuarioAutenticado, ...props }) {
@@ -67,7 +68,9 @@ function Rotas(props) {
     <HashRouter>
       <Switch>
         <Route path="/login" component={Login} />
-        <RotaAdministrador isUsuarioAutenticado={isUsuarioAutenticado} isAdmin={isAdmin} path="/cadastro-usuarios" component={CadastroUsuario} />
+        <RotaAdministrador isUsuarioAutenticado={isUsuarioAutenticado} isAdmin={isAdmin} path="/consulta-usuarios" component={ConsultaUsuarios} />
+        <RotaAdministrador isUsuarioAutenticado={isUsuarioAutenticado} isAdmin={isAdmin} path="/cadastro-usuario/:id?" component={CadastroUsuario} />
+        <RotaAdministrador isUsuarioAutenticado={isUsuarioAutenticado} isAdmin={isAdmin} path="/cadastro-usuario" component={CadastroUsuario} />
         <RotaAutenticada isUsuarioAutenticado={isUsuarioAutenticado} path="/home" component={Home} />
         <RotaAutenticada isUsuarioAutenticado={isUsuarioAutenticado} path="/consulta-lancamentos" component={ConsultaLancamentos} />
         <RotaAutenticada isUsuarioAutenticado={isUsuarioAutenticado} path="/cadastro-lancamentos/:id?" component={CadastroLancamentos} />

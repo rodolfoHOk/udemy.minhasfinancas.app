@@ -208,7 +208,6 @@ class ConsultaLancamentos extends React.Component {
                       lista={listaMeses}
                       value={mes}
                       onChange={(e) => this.setState({ mes: e.target.value })}
-
                     />
                   </FormGroup>
 

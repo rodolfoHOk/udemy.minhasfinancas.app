@@ -154,7 +154,7 @@ class Home extends React.Component {
               isAdmin ? (
                 <a
                   className="btn btn-primary btn-lg"
-                  href="#/cadastro-usuarios"
+                  href="#/cadastro-usuario"
                   role="button"
                 >
                   <i className="pi pi-users" />

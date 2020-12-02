@@ -15,6 +15,7 @@ class UsuarioService extends ApiService {
   constructor() {
     super('/api/usuarios');
     this.listaAutoridades = [
+      { label: 'SELECIONE...', value: '' },
       { label: 'Usuario', value: 'USUARIO' },
       { label: 'Administrador', value: 'ADMINISTRADOR' },
     ];
@@ -123,6 +124,10 @@ class UsuarioService extends ApiService {
       erros.push(`Campo senha tem que ter no máximo ${TAMANHO_MAX_SENHA} caracteres.`);
     }
 
+    if (!usuario.autoridade) {
+      erros.push('Campo autoridade é obrigatório.');
+    }
+
     if (erros && erros.length > 0) {
       throw new ErroValidacao(erros);
     }
@@ -130,6 +135,22 @@ class UsuarioService extends ApiService {
 
   salvar(usuario) {
     return this.post('/cadastrar', usuario);
+  }
+
+  consultar(param, valor) {
+    return this.get(`?${param}=${valor}`);
+  }
+
+  atualizar(usuario) {
+    return this.put(`/${usuario.id}`, usuario);
+  }
+
+  deletar(id) {
+    return this.delete(`/${id}`);
+  }
+
+  obterPorId(id) {
+    return this.get(`/${id}`);
   }
 }
 
